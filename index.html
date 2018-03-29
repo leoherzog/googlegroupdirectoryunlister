@@ -44,7 +44,7 @@
         var content = "";
         for (var i in groups) {
           var id = sanitizeForId(groups[i].email);
-          content += '<div class="col-4">';
+          content += '<div class="col-12 col-md-6 col-xl-4">';
             content += '<div id="' + id + '" class="card border-light mb-3">';
               content += '<div class="card-header">' + groups[i].email + ' <small>(' + groups[i].directMembersCount + ')</small></div>';
               content += '<div class="card-body">';
