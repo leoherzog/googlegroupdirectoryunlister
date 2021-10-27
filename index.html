@@ -2,20 +2,20 @@
 <html>
   <head>
     <base target="_top">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-    <link href="//cdnjs.cloudflare.com/ajax/libs/bootswatch/4.0.0/materia/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@4.6.0/dist/materia/bootstrap.min.css" rel="stylesheet" />
     <style>body{padding-top:40px}</style>
   </head>
   <body>
     <div class="container">
       <div class="row">
         <div class="col-auto mr-auto">
-          <h1><i class="fas fa-users"></i> Google Group Directory Listings</h1>
+          <h1><span class="fas fa-users fa-fw"></span>Google Group Directory Listings</h1>
         </div>
         <div class="col-auto">
-          <button type="button" id="refresh" class="btn btn-primary btn-lg"><i class="fas fa-sync"></i></button>
+          <button type="button" id="refresh" class="btn btn-primary btn-lg"><span class="fas fa-sync"></span></button>
         </div>
       </div>
       <div id="content" class="row">
@@ -25,93 +25,85 @@
       $(document).ready(function() {
         getGroups();
       });
-
-      $('#refresh').click(function() {
-        if (!$('#refresh').hasClass('disabled')) {
-          getGroups();
-        }
-      });
-
+      
       function getGroups() {
-        $('#refresh').addClass('disabled').html('<i class="fas fa-spin fa-sync"></i>');
+        $('#refresh').addClass('disabled').html('<span class="fas fa-spin fa-sync"></span>').off();
         google.script.run.withSuccessHandler(updateCards).withFailureHandler(handleError).getAllGroups();
       }
-
+      
       function updateCards(groups) {
-
-        console.log("Updating all groups...");
-
-        var content = "";
-        for (var i in groups) {
-          var id = sanitizeForId(groups[i].email);
+              
+        console.log('Updating all groups...');
+        
+        let content = '';
+        for (let group of groups) {
+          let id = sanitizeForId(group.email);
           content += '<div class="col-12 col-md-6 col-xl-4">';
             content += '<div id="' + id + '" class="card border-light mb-3">';
-              content += '<div class="card-header">' + groups[i].email + ' <small>(' + groups[i].directMembersCount + ')</small></div>';
+              content += '<div class="card-header">' + group.email + ' <small>(' + group.directMembersCount + ')</small></div>';
               content += '<div class="card-body">';
-                content += '<h4 class="card-title">' + groups[i].name + '</h4>';
+                content += '<h4 class="card-title">' + group.name + '</h4>';
                 content += '<p id="' + id + '-status" class="card-text"><button id="' + id + '-button" type="button" class="btn btn-sm btn-secondary disabled">Loading...</button></p>';
               content += '</div>';
             content += '</div>';
           content += '</div>';
         }
         $('#content').empty().html(content);
-
-        console.log("Updated all groups! Updating statuses for each card...");
-
-        for (var i in groups) {
-          getCardStatus(groups[i].email);
+        
+        console.log('Updated all groups! Updating statuses for each card...');
+        
+        let delay = 0; // avoid requesting all groups at once, apps script has a concurrent script limit
+        for (let group of groups) {
+          setTimeout(() => {google.script.run.withSuccessHandler(updateCardStatus).withFailureHandler(handleError).getGroupSettings(group.email)}, delay);
+          delay += 50; // ms
         }
-
-        $('#refresh').removeClass('disabled').html('<i class="fas fa-sync"></i>');
-
+        
+        $('#refresh').removeClass('disabled').html('<span class="fas fa-sync"></span>').click(getGroups);
+        
       }
-
+      
       function handleError(error) {
         alert(error);
       }
-
-      function getCardStatus(groupId) {
-        google.script.run.withSuccessHandler(updateCardStatus).withFailureHandler(handleError).getGroupSettings(groupId);
-      }
-
+      
       function updateCardStatus(settings) {
-
-        console.log("Updating Card for " + settings.email + "...");
-
-        var id = sanitizeForId(settings.email);
-        var card = $('#' + id);
-        var status = $('#' + id + '-status');
-
-        card.removeClass("border-light border-success border-danger border-warning");
-        if (settings.includeInGlobalAddressList == "true") {
-          card.addClass("border-success");
-          status.html('<button id="' + id + '-button" onclick="unlist(\'' + settings.email + '\')" type="button" class="btn btn-sm btn-success"><i class="fas fa-minus"></i> Unlist from Directory</button>');
-        } else if (settings.includeInGlobalAddressList == "false") {
-          card.addClass("border-danger");
-          status.html('<button id="' + id + '-button" onclick="relist(\'' + settings.email + '\')" type="button" class="btn btn-sm btn-danger"><i class="fas fa-plus"></i> Relist to Directory</button>');
+      
+        console.log('Updating Card for ' + settings.email + '...');
+        
+        let id = sanitizeForId(settings.email);
+        let card = $('#' + id);
+        let status = $('#' + id + '-status');
+        
+        card.removeClass('border-light border-success border-danger border-warning');
+        if (settings.includeInGlobalAddressList == 'true') {
+          card.addClass('border-success');
+          status.html('<button id="' + id + '-button" onclick="unlist(\'' + settings.email + '\')" type="button" class="btn btn-sm btn-success"><span class="fas fa-minus fa-fw"></span>Unlist from Directory</button>');
+        } else if (settings.includeInGlobalAddressList == 'false') {
+          card.addClass('border-danger');
+          status.html('<button id="' + id + '-button" onclick="relist(\'' + settings.email + '\')" type="button" class="btn btn-sm btn-danger"><span class="fas fa-plus fa-fw"></span>Relist to Directory</button>');
         } else {
-          card.addClass("border-warning");
+          card.addClass('border-warning');
           status.html('<button id="' + id + '-button" type="button" class="btn btn-sm btn-warning disabled">Error</button>');
         }
-
+        
       }
-
+      
       function unlist(groupId) {
-        console.log("Unlisting " + groupId + "...");
-        $("#" + sanitizeForId(groupId) + '-button').addClass("disabled").prop('onclick', null).off('click');
-        google.script.run.withSuccessHandler(updateCardStatus).withFailureHandler(handleError).showGroupInDirectory(groupId, "false");
+        console.log('Unlisting ' + groupId + '...');
+        $('#' + sanitizeForId(groupId) + '-button').addClass('disabled').prop('onclick', null).off('click');
+        google.script.run.withSuccessHandler(updateCardStatus).withFailureHandler(handleError).showGroupInDirectory(groupId, 'false');
       }
-
+      
       function relist(groupId) {
-        console.log("Relisting " + groupId + "...");
-        $("#" + sanitizeForId(groupId) + '-button').addClass("disabled").prop('onclick', null).off('click');
-        google.script.run.withSuccessHandler(updateCardStatus).withFailureHandler(handleError).showGroupInDirectory(groupId, "true");
+        console.log('Relisting ' + groupId + '...');
+        $('#' + sanitizeForId(groupId) + '-button').addClass('disabled').prop('onclick', null).off('click');
+        google.script.run.withSuccessHandler(updateCardStatus).withFailureHandler(handleError).showGroupInDirectory(groupId, 'true');
       }
-
+      
       function sanitizeForId(email) {
-        return email.replace(/@|\./g, "");
+        return email.replace(/@|\./g, '');
       }
     </script>
-
+    
   </body>
 </html>
