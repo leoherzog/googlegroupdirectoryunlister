@@ -7,7 +7,7 @@ function test_() {
   //console.log(JSON.stringify(groups));
   
   //console.log(showGroupInDirectory("group@yourdomain.com", false));
-  //console.log(getGroupDirectoryStatus("group@yourdomain.com"));
+  //console.log(getGroupSettings("group@yourdomain.com"));
 }
 
 // https://developers.google.com/apps-script/advanced/admin-sdk-directory#list_all_groups
