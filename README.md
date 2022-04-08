@@ -13,17 +13,16 @@ In order to make our Admin's lives easier, I created this script. It simply grab
 `Note: This project must be initially created by a domain administrator account`
 
 1. Log in as a domain administrator and create a [new Google Apps Script project](https://script.google.com/) in Google Drive.
-2. Copy and paste the code from [`code.gs`](https://raw.githubusercontent.com/leoherzog/googlegroupdirectoryunlister/master/code.gs) into `code.gs` in the Apps Script project
-3. Create a new html file with **File** → **New** → **Html file**, name it `index.html`, and copy the code from [`index.html`](https://raw.githubusercontent.com/leoherzog/googlegroupdirectoryunlister/master/index.html) into it.
-4. In the **Services** section on the left sidebar, turn on the **Admin Directory API** and **Groups Settings API**.
-5. Go into the `code.gs` file and change the `domain` variable on line 1 to be your domain.
-6. Go into **Deploy** → **New deployment**. Choose the level of access that you want to have on the panel (Under **Who has access**), and click **Deploy**.
+2. Copy and paste the code from [`code.gs`](https://raw.githubusercontent.com/leoherzog/googlegroupdirectoryunlister/master/code.gs) in this repository into `code.gs` in the Apps Script project
+3. Create a new html file in your project with the `Files ➕` button in the left sidebar, choose `HTML`, name it `index` (.html is added automatically), and copy the code from [`index.html`](https://raw.githubusercontent.com/leoherzog/googlegroupdirectoryunlister/master/index.html) from this repository into it.
+4. In the `Services ➕` section on the left sidebar, scroll down and turn on the **Admin Directory API** and **Groups Settings API**.
+5. Click `Deploy` → `New deployment`. Choose the level of access that you want to have on the panel (Under `Who has access`), and click `Deploy`.
 
 You're done! Navigate to that web app URL to see your groups and modify each one's setting.
 
 ### Updating
 
-When updates are released here on Github, simply copy and paste the newer [`code.gs`](https://raw.githubusercontent.com/leoherzog/googlegroupdirectoryunlister/master/code.gs) and [`index.html`](https://raw.githubusercontent.com/leoherzog/googlegroupdirectoryunlister/master/index.html) files to your project, and go to **Publish** → **Deploy as web app...**. Increment the version number (Pick "New" under the **Project Version** dropdown) and click **Deploy**. You should be good to go!
+When updates are released here on Github, simply copy and paste the newer [`code.gs`](https://raw.githubusercontent.com/leoherzog/googlegroupdirectoryunlister/master/code.gs) and [`index.html`](https://raw.githubusercontent.com/leoherzog/googlegroupdirectoryunlister/master/index.html) files to your project, and go to `Deploy` → `Manage deployments`. Click the `✏️ Edit` button in the top right of your current deployment, choose `New version` under the `Version` dropdown, and click `Deploy`. You should be good to go!
 
 - - -
 
