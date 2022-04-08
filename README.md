@@ -16,13 +16,14 @@ In order to make our Admin's lives easier, I created this script. It simply grab
 2. Copy and paste the code from [`code.gs`](https://raw.githubusercontent.com/leoherzog/googlegroupdirectoryunlister/master/code.gs) in this repository into `code.gs` in the Apps Script project
 3. Create a new html file in your project with the `Files ➕` button in the left sidebar, choose `HTML`, name it `index` (.html is added automatically), and copy the code from [`index.html`](https://raw.githubusercontent.com/leoherzog/googlegroupdirectoryunlister/master/index.html) from this repository into it.
 4. In the `Services ➕` section on the left sidebar, scroll down and turn on the **Admin Directory API** and **Groups Settings API**.
-5. Click `Deploy` → `New deployment`. Choose the level of access that you want to have on the panel (Under `Who has access`), and click `Deploy`.
+5. On `line 19` of `code.gs`, change `yourdomain.com` to your domain name.
+6. Click `Deploy` → `New deployment`. Choose the level of access that you want to have on the panel (Under `Who has access`), and click `Deploy`.
 
 You're done! Navigate to that web app URL to see your groups and modify each one's setting.
 
 ### Updating
 
-When updates are released here on Github, simply copy and paste the newer [`code.gs`](https://raw.githubusercontent.com/leoherzog/googlegroupdirectoryunlister/master/code.gs) and [`index.html`](https://raw.githubusercontent.com/leoherzog/googlegroupdirectoryunlister/master/index.html) files to your project, and go to `Deploy` → `Manage deployments`. Click the `✏️ Edit` button in the top right of your current deployment, choose `New version` under the `Version` dropdown, and click `Deploy`. You should be good to go!
+When updates are released here on Github, simply copy and paste the newer [`code.gs`](https://raw.githubusercontent.com/leoherzog/googlegroupdirectoryunlister/master/code.gs) and [`index.html`](https://raw.githubusercontent.com/leoherzog/googlegroupdirectoryunlister/master/index.html) files to your project, make sure your domain name on `line 19` of `code.gs` is correct, and go to `Deploy` → `Manage deployments`. Click the `✏️ Edit` button in the top right of your current deployment, choose `New version` under the `Version` dropdown, and click `Deploy`. You should be good to go!
 
 - - -
 

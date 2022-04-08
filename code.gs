@@ -16,7 +16,7 @@ function getAllGroups() {
   let pageToken, page;
   do {
     page = AdminDirectory.Groups.list({
-      "domain": "hope.edu",
+      "domain": "yourdomain.com",
       "pageToken": pageToken
     });
     if (page.groups) {
